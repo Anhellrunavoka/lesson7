@@ -75,14 +75,14 @@ public:
         output << tiime.hour << ":" << tiime.min << ":" << tiime.sec;
         return output;
     }
-    /*friend istream& operator>>(istream& input, const Time& tiime) {
+    friend istream& operator>>(istream& input, const Time& tiime) {
         input >> tiime.hour;
         input.ignore(1);
         input >> tiime.min;
         input.ignore(1);
         input >> tiime.sec;
         return input;
-    }*/
+    }
     Time& operator+=(int secc) {
         sec += secc;
         normal();
@@ -99,16 +99,20 @@ public:
         sec = s;
         normal();
     }
-    Time(const Time&& timee) {
+    Time(Time&& timee) {
+        sec = timee.sec;
+        min = timee.min;
+        hour = timee.hour;
+
         timee.sec = 0;
         timee.min = 0;
         timee.hour = 0;
     }
-    Time operator=(const Time&& timee) {
-        if (!(this == &timee)) {
+    Time& operator=(Time&& timee) {
+        if (this != &timee) {
             sec = timee.sec;
             min = timee.min;
-            hour = timee.min;
+            hour = timee.hour;
 
             timee.sec = 0;
             timee.min = 0;
@@ -123,9 +127,8 @@ int main()
     ++t;
     cout << t << endl;
     Time t2(0,3,7);
-    Time t3=t-t2;
-    cout << t3<<endl;
-    bool a = t > t2, b = t < t2,c=t2==t3,d=t!=t2;
+    cout<<t-t2 << endl;
+    bool a = t > t2, b = t < t2,c=t2==t,d=t!=t2;
     cout << a << " " << b<< " " << c<< " " << d;
     t -= 2;
     t2 += 7;
