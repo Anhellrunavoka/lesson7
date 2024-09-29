@@ -29,34 +29,32 @@ public:
            tiime.normal();
            return  tiime;
     }
-    friend const Time operator-(const Time& tiime1, const Time& tiime2) {
+    friend Time operator-( Time& tiime1,  Time& tiime2) {
         Time tiime3;
-        if (tiime1.hour >= tiime2.hour ) {
+
+        if (tiime1.sec >= tiime2.sec) {
             tiime3.sec = tiime1.sec - tiime2.sec;
-            if (tiime2.sec > tiime1.sec) {
-                tiime3.sec = (tiime1.sec + 60) - tiime2.sec;
-                if (tiime2.min > (tiime1.min-1)) {
-                    tiime3.min = (tiime1.min + 60) - tiime2.min;
-                    tiime3.hour = (tiime1.hour - 1) - tiime2.hour;
-                }
-                else {
-                    tiime3.min = tiime1.min - tiime2.min;
-                    tiime3.hour = tiime1.hour - tiime2.hour;
-                }
-            }
-            else {
-                tiime3.sec = tiime1.sec - tiime2.sec;
-                if (tiime2.min > tiime1.min) {
-                    tiime3.min = (tiime1.min + 60) - tiime2.min;
-                    tiime3.hour = (tiime1.hour - 1) - tiime2.hour;
-                }
-                else {
-                    tiime3.min = tiime1.min - tiime2.min;
-                    tiime3.hour = tiime1.hour - tiime2.hour;
-                }
-            }
         }
-        return  tiime3;
+        else {
+            tiime3.sec = (tiime1.sec + 60) - tiime2.sec;
+            tiime1.min--;  
+        }
+
+        if (tiime1.min >= tiime2.min) {
+            tiime3.min = tiime1.min - tiime2.min;
+        }
+        else {
+            tiime3.min = (tiime1.min + 60) - tiime2.min;
+            tiime1.hour--;  
+        }
+
+        tiime3.hour = tiime1.hour - tiime2.hour;
+
+        if (tiime3.hour < 0) {
+            tiime3.hour = 0;  
+        }
+
+        return tiime3;
     }
     bool operator==(const Time& tiime) const {
         return (hour == tiime.hour && min == tiime.min && sec == tiime.sec);
@@ -129,7 +127,10 @@ int main()
     Time t2(0,3,7);
     cout<<t-t2 << endl;
     bool a = t > t2, b = t < t2,c=t2==t,d=t!=t2;
-    cout << a << " " << b<< " " << c<< " " << d;
+    (a == true) ? cout << "t > t2 = true" << endl : cout << "t > t2 = false" << endl;
+    (b == true) ? cout << "t < t2= true" << endl : cout << "t>t2=false" << endl;
+    (c == true) ? cout << "t == t2 = true" << endl : cout << " t == t2 = false" << endl;
+    (d == true) ? cout << "t != t2 = true" << endl : cout << " t != t2 = false" << endl;
     t -= 2;
     t2 += 7;
     cout << t << " " << t2 << endl;
